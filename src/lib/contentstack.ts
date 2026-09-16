@@ -99,3 +99,34 @@ export async function getHeader() {
     return undefined;
   }
 }
+
+export async function getFooter() {
+  try {
+    const result = await stack
+      .contentType("footer")
+      .entry()
+      .query()
+      .where("title", QueryOperation.EQUALS, "Footer")
+      .find();
+
+    console.log("FOOTER QUERY RESULT:", result);
+    console.log("FOOTER ENTRIES:", result.entries);
+
+    if (result.entries && result.entries.length > 0) {
+      const entry = result.entries[0];
+
+      if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
+        contentstack.Utils.addEditableTags(entry, "footer", true);
+      }
+
+      return entry;
+    }
+
+    console.log("NO FOOTER ENTRY FOUND");
+
+    return undefined;
+  } catch (error) {
+    console.error("FOOTER FETCH ERROR:", error);
+    return undefined;
+  }
+}

@@ -1,22 +1,29 @@
-import { getHeader, getPage, initLivePreview } from "./lib/contentstack";
+import { getHeader, getFooter, getPage, initLivePreview } from "./lib/contentstack";
 import { useEffect, useState } from "react";
 import { Page } from "./lib/types";
 import ContentstackLivePreview, {
   VB_EmptyBlockParentClass,
 } from "@contentstack/live-preview-utils";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
+
 
 function App() {
   const [page, setPage] = useState<Page>();
   const [header, setHeader] = useState<any>();
+  const [footer, setFooter] = useState<any>();
+
 
   const getContent = async () => {
     const page = await getPage(window.location.pathname);
     const header = await getHeader();
     console.log("HEADER DATA:", header);
+    const footer = await getFooter();
+    console.log("FOOTER DATA:", footer);
 
     setPage(page);
     setHeader(header);
+    setFooter(footer);
   };
 
   useEffect(() => {
@@ -112,6 +119,8 @@ function App() {
           </div>
         </section>
       </main>
+      {/* Footer */}
+      <Footer data={footer} />
     </>
   );
 }
