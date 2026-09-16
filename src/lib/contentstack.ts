@@ -68,3 +68,34 @@ export async function getPage(url: string) {
     return entry;
   }
 }
+
+export async function getHeader() {
+  try {
+    const result = await stack
+      .contentType("header")
+      .entry()
+      .query()
+      .where("title", QueryOperation.EQUALS, "Main Header")
+      .find();
+
+    console.log("HEADER QUERY RESULT:", result);
+    console.log("HEADER ENTRIES:", result.entries);
+
+    if (result.entries && result.entries.length > 0) {
+      const entry = result.entries[0];
+
+      if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
+        contentstack.Utils.addEditableTags(entry, "header", true);
+      }
+
+      return entry;
+    }
+
+    console.log("NO HEADER ENTRY FOUND");
+
+    return undefined;
+  } catch (error) {
+    console.error("HEADER FETCH ERROR:", error);
+    return undefined;
+  }
+}
