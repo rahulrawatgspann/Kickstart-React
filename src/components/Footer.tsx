@@ -17,33 +17,16 @@ function Footer({ data }: FooterProps) {
         ) : null}
 
         {/* Navigation Links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex flex-wrap gap-6">
           {data?.navigation_links?.map(
-            (section: any, index: number) => (
-              <div key={index}>
-                <h3 className="font-semibold mb-3">
-                  {section?.title}
-                </h3>
-
-                <ul className="space-y-2">
-                  {section?.link?.map(
-                    (item: any, linkIndex: number) => (
-                      <li key={linkIndex}>
-                        <a
-                          href={
-                            item?.url?.href ||
-                            item?.url ||
-                            "/"
-                          }
-                          className="hover:underline"
-                        >
-                          {item?.label || item?.title}
-                        </a>
-                      </li>
-                    )
-                  )}
-                </ul>
-              </div>
+            (item: any, index: number) => (
+              <a
+                key={index}
+                href={item?.url?.href || item?.url || "/"}
+                className="hover:underline"
+              >
+                {item?.label || item?.url?.title}
+              </a>
             )
           )}
         </div>
