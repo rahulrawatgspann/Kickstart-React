@@ -50,19 +50,15 @@ export function initLivePreview() {
   });
 }
 
-export async function getPage(url: string, locale: string) {
+export async function getPage(url: string) {
   const result = await stack
     .contentType("page")
     .entry()
-    .locale(locale)
     .query()
     .where("url", QueryOperation.EQUALS, url)
     .find<Page>();
-    console.log("PAGE LOCALE:", locale);
-    console.log("PAGE URL:", url);
-    console.log("PAGE RESULT:", result);
 
-  if (result.entries && result.entries.length > 0) {
+  if (result.entries) {
     const entry = result.entries[0]
 
     if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === 'true') {
@@ -104,16 +100,15 @@ export async function getHeader() {
   }
 }
 
-export async function getFooter(locale: string) {
+export async function getFooter() {
   try {
     const result = await stack
       .contentType("footer")
       .entry()
-      .locale(locale)
       .query()
       .where("title", QueryOperation.EQUALS, "Footer")
       .find();
-    console.log("FOOTER LOCALE:", locale);
+
     console.log("FOOTER QUERY RESULT:", result);
     console.log("FOOTER ENTRIES:", result.entries);
 

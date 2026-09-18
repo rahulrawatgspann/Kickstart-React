@@ -15,25 +15,11 @@ function App() {
 
 
   const getContent = async () => {
-    const pathname = window.location.pathname;
-  // Remove trailing slash and split URL
-  const segments = pathname.split("/").filter(Boolean);
-
-  // First part of URL is the locale
-  const locale = segments[0] || "en";
-
-  // Remaining part is the page URL
-  const url = "/" + segments.slice(1).join("/");
-
-  console.log("CURRENT PATH:", pathname);
-  console.log("CURRENT LOCALE:", locale);
-  console.log("CURRENT PAGE URL:", url);
-
-  const page = await getPage(url || "/", locale);
-  const header = await getHeader();
-  console.log("HEADER DATA:", header);
-  const footer = await getFooter(locale);
-  console.log("FOOTER DATA:", footer);
+    const page = await getPage(window.location.pathname);
+    const header = await getHeader();
+    console.log("HEADER DATA:", header);
+    const footer = await getFooter();
+    console.log("FOOTER DATA:", footer);
 
     setPage(page);
     setHeader(header);
