@@ -15,11 +15,25 @@ function App() {
 
 
   const getContent = async () => {
-    const page = await getPage(window.location.pathname);
+
+    const pathname = window.location.pathname;
+    const localeMap: Record<string, string> = {
+      "/en/": "en-us",
+      "/fr/": "fr",
+      "/de/": "de",
+      "/es/": "es",
+    };
+
+    const locale = localeMap[pathname] || "en-us";
+    const pageUrl = pathname.replace(/^\/(en|fr|de|es)/, "") || "/";
+
+    console.log("Path:", pathname);
+    console.log("Locale:", locale);
+    console.log("Page URL:", pageUrl);
+
+    const page = await getPage(pageUrl, locale);
     const header = await getHeader();
-    console.log("HEADER DATA:", header);
     const footer = await getFooter();
-    console.log("FOOTER DATA:", footer);
 
     setPage(page);
     setHeader(header);
