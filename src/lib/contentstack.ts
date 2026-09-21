@@ -50,19 +50,22 @@ export function initLivePreview() {
   });
 }
 
-export async function getPage(url: string) {
+export async function getPage(url: string, locale: string) {
   const result = await stack
     .contentType("page")
     .entry()
     .query()
     .where("url", QueryOperation.EQUALS, url)
+    .addParams({
+      locale: locale,
+    })
     .find<Page>();
 
   if (result.entries) {
-    const entry = result.entries[0]
+    const entry = result.entries[0];
 
-    if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === 'true') {
-      contentstack.Utils.addEditableTags(entry, 'page', true);
+    if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
+      contentstack.Utils.addEditableTags(entry, "page", true);
     }
 
     return entry;
@@ -77,9 +80,6 @@ export async function getHeader() {
       .query()
       .where("title", QueryOperation.EQUALS, "Main Header")
       .find();
-
-    console.log("HEADER QUERY RESULT:", result);
-    console.log("HEADER ENTRIES:", result.entries);
 
     if (result.entries && result.entries.length > 0) {
       const entry = result.entries[0];
@@ -108,9 +108,6 @@ export async function getFooter() {
       .query()
       .where("title", QueryOperation.EQUALS, "Footer")
       .find();
-
-    console.log("FOOTER QUERY RESULT:", result);
-    console.log("FOOTER ENTRIES:", result.entries);
 
     if (result.entries && result.entries.length > 0) {
       const entry = result.entries[0];
