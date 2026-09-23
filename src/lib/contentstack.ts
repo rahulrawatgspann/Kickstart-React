@@ -102,15 +102,19 @@ export async function getHeader() {
 
 export async function getFooter() {
   try {
-    const result = await stack
-      .contentType("footer")
-      .entry()
-      .query()
-      .where("title", QueryOperation.EQUALS, "Footer")
-      .find();
+    const footerUid = import.meta.env.VITE_CONTENTSTACK_FOOTER_UID;
+    const query = stack.contentType("footer").entry().query();
+
+    const result = await (footerUid
+      ? query
+        .where("uid", QueryOperation.EQUALS, footerUid)
+        .find()
+      : query
+        .where("title", QueryOperation.EQUALS, "Footer")
+        .find());
 
     if (result.entries && result.entries.length > 0) {
-      const entry = result.entries[0];
+      const entry = result.entries[0] as Parameters<typeof contentstack.Utils.addEditableTags>[0];
 
       if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
         contentstack.Utils.addEditableTags(entry, "footer", true);

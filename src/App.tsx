@@ -39,6 +39,9 @@ function App() {
 
   useEffect(() => {
     initLivePreview();
+    queueMicrotask(() => {
+      void getContent();
+    });
     ContentstackLivePreview.onEntryChange(getContent);
   }, []);
 
