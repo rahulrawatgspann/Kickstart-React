@@ -3,44 +3,48 @@ type FooterProps = {
 };
 
 function Footer({ data }: FooterProps) {
+  const footerData = data ?? {};
+
   return (
     <footer className="border-t bg-gray-100">
-      <div className="max-w-(--breakpoint-md) mx-auto p-8">
+      <div className="mx-auto max-w-(--breakpoint-md) p-8">
+        <div className="flex items-start justify-between gap-8">
+          <div className="flex-1">
+            {/* Logo */}
+            {footerData?.logo?.url ? (
+              <img
+                src={footerData.logo.url}
+                alt={footerData.logo.title || "Logo"}
+                className="mb-6 h-10 w-auto"
+              />
+            ) : null}
 
-        {/* Logo */}
-        {data?.logo?.url ? (
-          <img
-            src={data.logo.url}
-            alt={data.logo.title || "Logo"}
-            className="h-10 w-auto mb-6"
-          />
-        ) : null}
+            {/* Copyright */}
+            {footerData?.copyright_info ? (
+              <div
+                className="mt-8 border-t pt-4 text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: footerData.copyright_info,
+                }}
+              />
+            ) : null}
+          </div>
 
-        {/* Navigation Links */}
-        <div className="flex flex-wrap gap-6">
-          {data?.navigation_links?.map(
-            (item: any, index: number) => (
-              <a
-                key={index}
-                href={item?.url?.href || item?.url || "/"}
-                className="hover:underline"
-              >
-                {item?.label || item?.url?.title}
-              </a>
-            )
-          )}
+          {/* Navigation Links */}
+          <nav className="flex flex-wrap items-center justify-end gap-6 text-right">
+            {footerData?.navigation_links?.map(
+              (item: any, index: number) => (
+                <a
+                  key={index}
+                  href={item?.url?.href || item?.url || "/"}
+                  className="hover:underline"
+                >
+                  {item?.label || item?.url?.title}
+                </a>
+              )
+            )}
+          </nav>
         </div>
-
-        {/* Copyright */}
-        {data?.copyright_info ? (
-          <div
-            className="mt-8 pt-4 border-t text-sm"
-            dangerouslySetInnerHTML={{
-              __html: data.copyright_info,
-            }}
-          />
-        ) : null}
-
       </div>
     </footer>
   );
