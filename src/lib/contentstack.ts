@@ -102,12 +102,11 @@ export async function getHeader() {
 
 export async function getFooter() {
   try {
-    const footerUid = import.meta.env.VITE_CONTENTSTACK_FOOTER_UID;
-    const query = stack.contentType("footer").entry().query();
-
-    const result = await (footerUid
-      ? query.where("uid", QueryOperation.EQUALS, footerUid).find()
-      : query.find());
+    const result = await stack
+      .contentType("footer")
+      .entry()
+      .query()
+      .find();
 
     if (result.entries && result.entries.length > 0) {
       const entry = result.entries[0] as Parameters<typeof contentstack.Utils.addEditableTags>[0];
