@@ -106,12 +106,8 @@ export async function getFooter() {
     const query = stack.contentType("footer").entry().query();
 
     const result = await (footerUid
-      ? query
-        .where("uid", QueryOperation.EQUALS, footerUid)
-        .find()
-      : query
-        .where("title", QueryOperation.EQUALS, "Footer")
-        .find());
+      ? query.where("uid", QueryOperation.EQUALS, footerUid).find()
+      : query.find());
 
     if (result.entries && result.entries.length > 0) {
       const entry = result.entries[0] as Parameters<typeof contentstack.Utils.addEditableTags>[0];
