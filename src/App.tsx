@@ -29,8 +29,8 @@ function App() {
     const pageUrl = pathname.replace(/^\/(en|fr|de|es)/, "") || "/";
 
     const page = await getPage(pageUrl, locale);
-    const header = await getHeader();
-    const footer = await getFooter();
+    const header = await getHeader(locale);
+    const footer = await getFooter(locale);
 
     setPage(page);
     setHeader(header);

@@ -72,13 +72,16 @@ export async function getPage(url: string, locale: string) {
   }
 }
 
-export async function getHeader() {
+export async function getHeader(locale: string) {
   try {
     const result = await stack
       .contentType("header")
       .entry()
       .query()
       .where("title", QueryOperation.EQUALS, "Main Header")
+      .addParams({
+        locale: locale,
+      })
       .find();
 
     if (result.entries && result.entries.length > 0) {
@@ -100,16 +103,22 @@ export async function getHeader() {
   }
 }
 
-export async function getFooter() {
+export async function getFooter(locale: string) {
   try {
     const result = await stack
       .contentType("footer")
       .entry()
       .query()
+      .addParams({
+        locale: locale,
+      })
       .find();
 
     if (result.entries && result.entries.length > 0) {
-      const entry = result.entries[0] as Parameters<typeof contentstack.Utils.addEditableTags>[0];
+      const entry =
+        result.entries[0] as Parameters<
+          typeof contentstack.Utils.addEditableTags
+        >[0];
 
       if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
         contentstack.Utils.addEditableTags(entry, "footer", true);
