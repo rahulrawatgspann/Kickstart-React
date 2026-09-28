@@ -4,11 +4,24 @@ import { Page } from "./types";
 import { getContentstackEndpoint, type ContentstackEndpoints } from "@contentstack/utils";
 
 const endpoints = getContentstackEndpoint(import.meta.env.VITE_CONTENTSTACK_REGION || 'NA', '', true) as ContentstackEndpoints
+const branch = import.meta.env.VITE_CONTENTSTACK_BRANCH || "main";
+const localeMap: Record<string, string> = {
+  en: "en-us",
+  fr: "fr",
+  de: "de",
+  es: "es",
+};
+
+export function getLocaleFromPath(pathname = window.location.pathname) {
+  const localeKey = pathname.split("/")[1];
+  return localeMap[localeKey] || "en-us";
+}
 
 export const stack = contentstack.stack({
   apiKey: import.meta.env.VITE_CONTENTSTACK_API_KEY as string,
   deliveryToken: import.meta.env.VITE_CONTENTSTACK_DELIVERY_TOKEN as string,
   environment: import.meta.env.VITE_CONTENTSTACK_ENVIRONMENT as string,
+  branch,
 
   // Setting the region
   // for custom or dedicated Contentstack environments, override each endpoint individually using environment variables.
@@ -37,6 +50,8 @@ export function initLivePreview() {
     stackDetails: {
       apiKey: import.meta.env.VITE_CONTENTSTACK_API_KEY as string,
       environment: import.meta.env.VITE_CONTENTSTACK_ENVIRONMENT as string,
+      branch,
+      locale: getLocaleFromPath(),
     },
     clientUrlParams: {
       // Setting the client URL parameters for live preview
@@ -65,7 +80,7 @@ export async function getPage(url: string, locale: string) {
     const entry = result.entries[0];
 
     if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
-      contentstack.Utils.addEditableTags(entry, "page", true);
+      contentstack.Utils.addEditableTags(entry, "page", true, locale);
     }
 
     return entry;
@@ -85,10 +100,10 @@ export async function getHeader(locale: string) {
       .find();
 
     if (result.entries && result.entries.length > 0) {
-      const entry = result.entries[0];
+      const entry = result.entries[0] as Parameters<typeof contentstack.Utils.addEditableTags>[0];
 
       if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
-        contentstack.Utils.addEditableTags(entry, "header", true);
+        contentstack.Utils.addEditableTags(entry, "header", true, locale);
       }
 
       return entry;
@@ -121,7 +136,7 @@ export async function getFooter(locale: string) {
         >[0];
 
       if (import.meta.env.VITE_CONTENTSTACK_PREVIEW === "true") {
-        contentstack.Utils.addEditableTags(entry, "footer", true);
+        contentstack.Utils.addEditableTags(entry, "footer", true, locale);
       }
 
       return entry;
