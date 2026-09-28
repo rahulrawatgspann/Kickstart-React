@@ -93,7 +93,7 @@ function App() {
 
               return (
                 <div
-                  key={block._metadata.uid}
+                  key={block?._metadata?.uid || index}
                   {...(page?.$ && page?.$[`blocks__${index}`])}
                   className={`flex flex-col items-center space-y-4 md:space-y-0 bg-slate-100 ${isImageLeft ? "md:flex-row" : "md:flex-row-reverse"
                     }`}
