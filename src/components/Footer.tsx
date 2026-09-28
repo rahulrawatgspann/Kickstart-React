@@ -2,13 +2,26 @@ type FooterProps = {
   data?: any;
 };
 
-const getField = (data: any, names: string[]) => {
+const getFieldKey = (data: any, names: string[]) => {
   const normalizedNames = names.map((name) => name.replace(/[-_\s]/g, "").toLowerCase());
-  const key = Object.keys(data || {}).find((item) =>
+  return Object.keys(data || {}).find((item) =>
     normalizedNames.includes(item.replace(/[-_\s]/g, "").toLowerCase())
   );
+};
 
+const getField = (data: any, names: string[]) => {
+  const key = getFieldKey(data, names);
   return key ? data[key] : undefined;
+};
+
+const getEditableTag = (data: any, names: string[]) => {
+  const key = getFieldKey(data, names);
+  return key ? data?.$?.[key] : undefined;
+};
+
+const getArrayItemEditableTag = (data: any, names: string[], index: number) => {
+  const key = getFieldKey(data, names);
+  return key ? data?.$?.[`${key}__${index}`] : undefined;
 };
 
 const getUrl = (value: any) => {
@@ -111,12 +124,19 @@ function Footer({ data }: FooterProps) {
 
   const columns = getField(data, ["feature_columns", "footer_columns", "columns"]) ||
     (data.navigation_links ? [{ links: data.navigation_links }] : []);
+  const columnFieldNames = ["feature_columns", "footer_columns", "columns"];
   const socialLinks = getField(data, ["social_links", "social_media_links", "social_media"]) || [];
+  const socialFieldNames = ["social_links", "social_media_links", "social_media"];
   const companyLogos = getField(data, ["company_logos", "company_links", "cards"]) || [];
+  const companyLogoFieldNames = ["company_logos", "company_links", "cards"];
   const legalLinks = getField(data, ["legal_links", "bottom_links"]) || [];
+  const legalLinkFieldNames = ["legal_links", "bottom_links"];
   const copy = getField(data, ["description", "copy", "footer_copy", "content", "rich_text"]);
+  const copyFieldNames = ["description", "copy", "footer_copy", "content", "rich_text"];
   const copyright = getField(data, ["copyright_info", "copyright", "copyright_text", "copyright_notice"]);
+  const copyrightFieldNames = ["copyright_info", "copyright", "copyright_text", "copyright_notice"];
   const cta = getCta(data);
+  const ctaFieldNames = ["cta_button", "cta", "call_to_action", "connect_with_us"];
   const ctaLabel = getText(cta?.button_text || cta?.label || cta?.title || cta?.text, "Connect With Us");
 
   return (
@@ -125,27 +145,77 @@ function Footer({ data }: FooterProps) {
         <div className="grid gap-10 lg:grid-cols-[1.3fr_2fr_0.8fr]">
           <div>
             {getImage(data) ? (
-              <img src={getImage(data)} alt="Company logo" className="mb-6 h-9 w-auto" />
+              <img
+                src={getImage(data)}
+                alt="Company logo"
+                className="mb-6 h-9 w-auto"
+                {...(getField(data, ["logo", "company_logo", "image"])?.$?.url ||
+                  getEditableTag(data, ["logo", "company_logo", "image"]))}
+              />
             ) : null}
-            {data.title ? <h2 className="mb-3 text-xl font-normal">{data.title}</h2> : null}
+            {data.title ? (
+              <h2 className="mb-3 text-xl font-normal" {...(data?.$?.title && data.$.title)}>
+                {data.title}
+              </h2>
+            ) : null}
             {typeof copy === "string" && copy ? (
-              <div className="max-w-md text-sm leading-6 text-white/80" dangerouslySetInnerHTML={{ __html: copy }} />
+              <div
+                className="max-w-md text-sm leading-6 text-white/80"
+                {...getEditableTag(data, copyFieldNames)}
+                dangerouslySetInnerHTML={{ __html: copy }}
+              />
             ) : null}
             {cta ? (
-              <a href={getUrl(cta)} className="mt-5 inline-flex h-10 items-center justify-center rounded-full bg-sky-600 px-6 text-sm font-medium uppercase hover:bg-sky-500">
-                {ctaLabel}
+              <a
+                href={getUrl(cta)}
+                className="mt-5 inline-flex h-10 items-center justify-center rounded-full bg-sky-600 px-6 text-sm font-medium uppercase hover:bg-sky-500"
+                {...getEditableTag(data, ctaFieldNames)}
+              >
+                <span {...(cta?.$?.button_text || cta?.$?.label || cta?.$?.title || cta?.$?.text)}>
+                  {ctaLabel}
+                </span>
               </a>
             ) : null}
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-3" {...getEditableTag(data, columnFieldNames)}>
             {columns.map((column: any, index: number) => (
-              <div key={column?._metadata?.uid || index}>
-                <h3 className="mb-4 text-xs font-semibold uppercase text-[#9da8d0]">{column?.heading || column?.title || column?.name}</h3>
-                <ul className="space-y-3 text-sm">
+              <div
+                key={column?._metadata?.uid || index}
+                {...getArrayItemEditableTag(data, columnFieldNames, index)}
+              >
+                <h3
+                  className="mb-4 text-xs font-semibold uppercase text-[#9da8d0]"
+                  {...(column?.$?.heading || column?.$?.title || column?.$?.name)}
+                >
+                  {column?.heading || column?.title || column?.name}
+                </h3>
+                <ul
+                  className="space-y-3 text-sm"
+                  {...(column?.$?.links || column?.$?.navigation_links || column?.$?.items)}
+                >
                   {getLinkItems(column).map((link: any, linkIndex: number) => (
-                    <li key={link?._metadata?.uid || linkIndex}>
-                      <a href={getUrl(link)} className="hover:text-[#9da8d0]">{getLinkLabel(link)}</a>
+                    <li
+                      key={link?._metadata?.uid || linkIndex}
+                      {...(column?.$?.[`links__${linkIndex}`] ||
+                        column?.$?.[`navigation_links__${linkIndex}`] ||
+                        column?.$?.[`items__${linkIndex}`])}
+                    >
+                      <a
+                        href={getUrl(link)}
+                        className="hover:text-[#9da8d0]"
+                        {...(link?.$?.url || link?.$?.link || link?.$?.external_url)}
+                      >
+                        <span
+                          {...(link?.$?.label ||
+                            link?.$?.title ||
+                            link?.$?.text ||
+                            link?.url?.$?.title ||
+                            link?.link?.$?.title)}
+                        >
+                          {getLinkLabel(link)}
+                        </span>
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -156,8 +226,20 @@ function Footer({ data }: FooterProps) {
           <div className="flex items-start justify-start lg:justify-end">
             <div className="flex gap-3">
               {socialLinks.map((link: any, index: number) => (
-                <a key={link?._metadata?.uid || index} href={getUrl(link)} aria-label={getLinkLabel(link)}>
-                  {getImage(link) ? <img src={getImage(link)} alt="Social icon" className="h-9 w-9 rounded-full p-2" /> : null}
+                <a
+                  key={link?._metadata?.uid || index}
+                  href={getUrl(link)}
+                  aria-label={getLinkLabel(link)}
+                  {...getArrayItemEditableTag(data, socialFieldNames, index)}
+                >
+                  {getImage(link) ? (
+                    <img
+                      src={getImage(link)}
+                      alt="Social icon"
+                      className="h-9 w-9 rounded-full p-2"
+                      {...(link?.$?.icon_url || link?.$?.icon || link?.$?.image)}
+                    />
+                  ) : null}
                 </a>
               ))}
             </div>
@@ -165,10 +247,25 @@ function Footer({ data }: FooterProps) {
         </div>
 
         {companyLogos.length > 0 ? (
-          <div className="mt-10 grid grid-cols-2 gap-4 border-t border-[#9da8d0]/40 pt-6 sm:grid-cols-4 lg:grid-cols-8">
+          <div
+            className="mt-10 grid grid-cols-2 gap-4 border-t border-[#9da8d0]/40 pt-6 sm:grid-cols-4 lg:grid-cols-8"
+            {...getEditableTag(data, companyLogoFieldNames)}
+          >
             {companyLogos.map((item: any, index: number) => (
-              <a key={item?._metadata?.uid || index} href={getUrl(item)} className="flex h-16 items-center justify-center">
-                {getImage(item) ? <img src={getImage(item)} alt="Company logo" className="max-h-10 w-auto max-w-full object-contain" /> : null}
+              <a
+                key={item?._metadata?.uid || index}
+                href={getUrl(item)}
+                className="flex h-16 items-center justify-center"
+                {...getArrayItemEditableTag(data, companyLogoFieldNames, index)}
+              >
+                {getImage(item) ? (
+                  <img
+                    src={getImage(item)}
+                    alt="Company logo"
+                    className="max-h-10 w-auto max-w-full object-contain"
+                    {...(item?.$?.logo || item?.$?.image || item?.$?.icon)}
+                  />
+                ) : null}
               </a>
             ))}
           </div>
@@ -178,17 +275,38 @@ function Footer({ data }: FooterProps) {
       <div className="bg-[#070a15]">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-3 text-xs text-white/80 lg:px-8">
           {legalLinks.length > 0 ? (
-            <nav className="flex flex-wrap gap-x-2 gap-y-1">
+            <nav className="flex flex-wrap gap-x-2 gap-y-1" {...getEditableTag(data, legalLinkFieldNames)}>
               {legalLinks.map((link: any, index: number) => (
-                <span key={link?._metadata?.uid || index} className="flex gap-2">
-                  <a href={getUrl(link)} className="hover:text-white">{getLinkLabel(link)}</a>
+                <span
+                  key={link?._metadata?.uid || index}
+                  className="flex gap-2"
+                  {...getArrayItemEditableTag(data, legalLinkFieldNames, index)}
+                >
+                  <a
+                    href={getUrl(link)}
+                    className="hover:text-white"
+                    {...(link?.$?.url || link?.$?.link || link?.$?.external_url)}
+                  >
+                    <span
+                      {...(link?.$?.label ||
+                        link?.$?.title ||
+                        link?.$?.text ||
+                        link?.url?.$?.title ||
+                        link?.link?.$?.title)}
+                    >
+                      {getLinkLabel(link)}
+                    </span>
+                  </a>
                   {index < legalLinks.length - 1 ? <span>|</span> : null}
                 </span>
               ))}
             </nav>
           ) : null}
           {typeof copyright === "string" && copyright ? (
-            <div dangerouslySetInnerHTML={{ __html: copyright }} />
+            <div
+              {...getEditableTag(data, copyrightFieldNames)}
+              dangerouslySetInnerHTML={{ __html: copyright }}
+            />
           ) : null}
         </div>
       </div>

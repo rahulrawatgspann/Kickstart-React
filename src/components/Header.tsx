@@ -43,16 +43,26 @@ function Header({ data }: HeaderProps) {
             src={data.logo.url}
             alt={data.logo.title || "Logo"}
             className="h-10 w-auto"
+            {...(data?.$?.logo && data.$.logo)}
           />
         ) : null}
 
         <div className="flex items-center gap-8">
-          <nav>
+          <nav {...(data?.$?.navigation && data.$.navigation)}>
             <ul className="flex gap-6">
               {data?.navigation?.map((item: any, index: number) => (
-                <li key={index}>
-                  <a href={item?.url?.href || item?.url || "/"}>
-                    {item?.label}
+                <li
+                  key={index}
+                  {...(data?.$?.[`navigation__${index}`] &&
+                    data.$[`navigation__${index}`])}
+                >
+                  <a
+                    href={item?.url?.href || item?.url || "/"}
+                    {...(item?.$?.url || item?.url?.$?.href)}
+                  >
+                    <span {...(item?.$?.label && item.$.label)}>
+                      {item?.label}
+                    </span>
                   </a>
                 </li>
               ))}
