@@ -1,4 +1,4 @@
-import { getHeader, getFooter, getPage, initLivePreview } from "./lib/contentstack";
+import { getHeader, getFooter, getPage, getLocaleFromPath, initLivePreview } from "./lib/contentstack";
 import { useEffect, useState } from "react";
 import { Page } from "./lib/types";
 import ContentstackLivePreview, {
@@ -17,20 +17,12 @@ function App() {
   const getContent = async () => {
 
     const pathname = window.location.pathname;
-    const localeMap: Record<string, string> = {
-      en: "en-us",
-      fr: "fr",
-      de: "de",
-      es: "es",
-    };
-
-    const localeKey = pathname.split("/")[1];
-    const locale = localeMap[localeKey] || "en-us";
+    const locale = getLocaleFromPath(pathname);
     const pageUrl = pathname.replace(/^\/(en|fr|de|es)/, "") || "/";
 
     const page = await getPage(pageUrl, locale);
 
-    if (page) {
+    if (page && "setPageContext" in ContentstackLivePreview) {
       ContentstackLivePreview.setPageContext({
         entryUid: page.uid,
         contentTypeUid: "page",
