@@ -29,6 +29,14 @@ function App() {
     const pageUrl = pathname.replace(/^\/(en|fr|de|es)/, "") || "/";
 
     const page = await getPage(pageUrl, locale);
+
+    if (page) {
+      ContentstackLivePreview.setPageContext({
+        entryUid: page.uid,
+        contentTypeUid: "page",
+      });
+    }
+
     const header = await getHeader(locale);
     const footer = await getFooter(locale);
 
