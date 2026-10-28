@@ -49,4 +49,15 @@ export interface Page {
   image?: File | null;
   rich_text?: string;
   blocks?: Blocks[];
+  cta_block?: {
+    title?: string;
+    description?: string;
+    button_text?: string;
+    button_url?: {
+      href?: string;
+      url?: string;
+      title?: string;
+    } | string;
+    button_style?: string;
+  };
 }

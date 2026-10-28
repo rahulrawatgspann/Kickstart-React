@@ -27,6 +27,7 @@
     "@contentstack/delivery-sdk": "^5.5.2",
     "@contentstack/live-preview-utils": "^4.5.2",
     "@contentstack/utils": "^1.9.1",
+    "@contentstack/venus-components": "^3.0.6",
     "dompurify": "^3.4.13",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
