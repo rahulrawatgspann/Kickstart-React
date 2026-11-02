@@ -18,6 +18,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CTA from "./components/CTA";
 import Hero from "./components/Hero";
+import TableBlock from "./components/TableBlock";
+import ContactForm from "./components/ContactForm";
 
 function App() {
   const [page, setPage] = useState<Page>();
@@ -138,6 +140,20 @@ function App() {
                 />
               )}
             </div>
+          </div>
+        );
+      }
+
+      // Table Block
+      if (blockType === "table_block") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <TableBlock
+              {...(blockData.table_block || blockData)}
+            />
           </div>
         );
       }
