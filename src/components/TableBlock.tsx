@@ -8,7 +8,17 @@ interface TableColumn {
 }
 
 interface TableCell {
-  cell_value: string;
+  cell_type?: "Text" | "Image" | null;
+  cell_value?: string;
+  image?: {
+    url: string;
+    title?: string;
+    filename?: string;
+  } | null;
+}
+
+interface TableRow {
+  row_data: TableCell[];
 }
 
 interface TableRow {
@@ -33,17 +43,42 @@ const TableBlock = ({
   const venusColumns = columns.map((column) => ({
     Header: column.column_name,
     accessor: column.column_key,
-    disableSortBy: false,
+
+    Cell: ({ value }: { value: TableCell | null }) => {
+      if (!value) return "-";
+
+      if (value.cell_type === "Image") {
+        return value.image?.url ? (
+          <img
+            src={value.image.url}
+            alt={value.image.title || "Table image"}
+            className="h-20 w-20 rounded object-contain"
+          />
+        ) : (
+          "-"
+        );
+      }
+
+      return value.cell_value || "-";
+    },
   }));
 
+  console.log("Complete table rows:", rows);
+
+  rows.forEach((row, rowIndex) => {
+    row.row_data?.forEach((cell, cellIndex) => {
+      console.log(`Row ${rowIndex + 1}, Cell ${cellIndex + 1}:`, cell);
+    });
+  });
+
   const tableData = rows.map((row, rowIndex) => {
-    const record: Record<string, string | number> = {
+    const record: Record<string, any> = {
       id: rowIndex,
     };
 
     columns.forEach((column, columnIndex) => {
       record[column.column_key] =
-        row.row_data?.[columnIndex]?.cell_value || "-";
+        row.row_data?.[columnIndex] || null;
     });
 
     return record;

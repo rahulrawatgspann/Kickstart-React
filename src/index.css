@@ -57,3 +57,11 @@
 .hero img {
   height: 200px;
 }
+
+.Table {
+  min-height: 0;
+}
+
+.Table img {
+  height: 45px;
+}
