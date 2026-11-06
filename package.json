@@ -30,7 +30,8 @@
     "@contentstack/venus-components": "^3.0.6",
     "dompurify": "^3.4.13",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

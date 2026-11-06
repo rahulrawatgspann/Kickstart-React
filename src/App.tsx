@@ -22,6 +22,7 @@ import TableBlock from "./components/TableBlock";
 // import ContactForm from "./components/ContactForm";
 import AccordionBlock from "./components/AccordionBlock";
 import RegistrationForm from "./components/RegistrationForm";
+import AnalyticsDashboard from "./components/AnalyticsDashboard";
 
 function App() {
   const [page, setPage] = useState<Page>();
@@ -120,6 +121,19 @@ function App() {
           >
             <RegistrationForm
               {...(blockData.registration_form || blockData)}
+            />
+          </div>
+        );
+      }
+
+      if (blockType === "analytics_dashboard") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <AnalyticsDashboard
+              {...(blockData.analytics_dashboard || blockData)}
             />
           </div>
         );
