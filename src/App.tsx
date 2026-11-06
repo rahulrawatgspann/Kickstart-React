@@ -19,7 +19,9 @@ import Footer from "./components/Footer";
 import CTA from "./components/CTA";
 import Hero from "./components/Hero";
 import TableBlock from "./components/TableBlock";
-import ContactForm from "./components/ContactForm";
+// import ContactForm from "./components/ContactForm";
+import AccordionBlock from "./components/AccordionBlock";
+import RegistrationForm from "./components/RegistrationForm";
 
 function App() {
   const [page, setPage] = useState<Page>();
@@ -80,6 +82,20 @@ function App() {
             {...(page?.$ && page.$[`blocks__${index}`])}
           >
             <CTA data={blockData.cta || blockData} />
+          </div>
+        );
+      }
+
+      // Accordion Block
+      if (blockType === "accordion_block") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <AccordionBlock
+              {...(blockData.accordion_block || blockData)}
+            />
           </div>
         );
       }

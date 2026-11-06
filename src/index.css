@@ -65,3 +65,7 @@
 .Table img {
   height: 45px;
 }
+
+details div {
+  padding: 20px;
+}

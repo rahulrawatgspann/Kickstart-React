@@ -16,7 +16,6 @@ interface CTAProps {
 }
 
 const CTA = ({ data }: CTAProps) => {
-  console.debug('🚀 ~ CTA.tsx:19 ~ CTA ~ data:', data);
   if (!data) return null;
 
   const {

@@ -63,14 +63,6 @@ const TableBlock = ({
     },
   }));
 
-  console.log("Complete table rows:", rows);
-
-  rows.forEach((row, rowIndex) => {
-    row.row_data?.forEach((cell, cellIndex) => {
-      console.log(`Row ${rowIndex + 1}, Cell ${cellIndex + 1}:`, cell);
-    });
-  });
-
   const tableData = rows.map((row, rowIndex) => {
     const record: Record<string, any> = {
       id: rowIndex,
