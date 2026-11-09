@@ -2,6 +2,7 @@
 interface AccordionItem {
   question?: string;
   answer?: string;
+  category?: string;
   $?: Record<string, any>;
 }
 

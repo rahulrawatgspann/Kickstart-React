@@ -22,6 +22,7 @@ import TableBlock from "./components/TableBlock";
 // import ContactForm from "./components/ContactForm";
 import AccordionBlock from "./components/AccordionBlock";
 import RegistrationForm from "./components/RegistrationForm";
+import SearchableFAQ from "./components/SearchableFAQ";
 
 function App() {
   const [page, setPage] = useState<Page>();
@@ -120,6 +121,19 @@ function App() {
           >
             <RegistrationForm
               {...(blockData.registration_form || blockData)}
+            />
+          </div>
+        );
+      }
+
+      if (blockType === "searchable_faq") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <SearchableFAQ
+              {...(blockData.searchable_faq || blockData)}
             />
           </div>
         );
