@@ -112,6 +112,19 @@ function App() {
         );
       }
 
+      if (blockType === "registration_form") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <RegistrationForm
+              {...(blockData.registration_form || blockData)}
+            />
+          </div>
+        );
+      }
+
       // Existing Image & Text Block
       if (blockType === "block") {
         const isImageLeft = blockData.layout === "image_left";
