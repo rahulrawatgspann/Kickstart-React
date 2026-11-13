@@ -1,0 +1,163 @@
+
+.alternating {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  margin: 30px 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+/* Common content styles */
+
+.alternating__content {
+  position: relative;
+  z-index: 2;
+}
+
+.alternating__heading {
+  margin: 0 0 22px;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.alternating__description {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.alternating__button {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 13px 32px;
+  border-radius: 30px;
+  background: #e31837;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.alternating__button:hover {
+  background: #bd102b;
+}
+
+/* Variant 1: Image Left, Text Right */
+
+.alternating--image-left {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+}
+
+.alternating--image-left .alternating__image {
+  width: 100%;
+}
+
+.alternating--image-left .alternating__image img {
+  display: block;
+  width: 100%;
+  height: 340px;
+  object-fit: contain;
+}
+
+.alternating--image-left .alternating__content {
+  padding: 10px;
+}
+
+/* Variant 2: Text Over Background Image */
+
+.alternating--text-background {
+  display: flex;
+  align-items: center;
+  min-height: 390px;
+  padding: 45px 35px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.alternating--text-background .alternating__overlay,
+.alternating--text-left .alternating__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, var(--overlay-opacity, 0.55));
+}
+
+.alternating--text-background .alternating__content {
+  width: 100%;
+}
+
+/* Variant 3: Text Left, Image Right */
+
+.alternating--text-left {
+  min-height: 520px;
+  padding: 40px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.alternating--text-left .alternating__content {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 40px;
+  min-height: 440px;
+}
+
+.alternating--text-left .alternating__text {
+  max-width: 600px;
+}
+
+.alternating--text-left .alternating__foreground-image img {
+  display: block;
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .alternating--image-left {
+    grid-template-columns: 1fr;
+    padding: 25px;
+    gap: 25px;
+  }
+
+  .alternating--image-left .alternating__image img {
+    height: 260px;
+  }
+
+  .alternating--text-background {
+    min-height: 350px;
+    padding: 30px 22px;
+  }
+
+  .alternating--text-left {
+    padding: 25px;
+  }
+
+  .alternating--text-left .alternating__content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .alternating--text-left .alternating__foreground-image img {
+    height: 280px;
+  }
+
+  .alternating__description {
+    font-size: 16px;
+  }
+}

@@ -21,14 +21,6 @@ const Hero = ({ data }: HeroProps) => {
 
   return (
     <section className="hero">
-      {data.image?.url && (
-        <img
-          src={data.image.url}
-          alt={data.image.title || data.heading || "Hero"}
-          {...(data.image?.$ && data.image.$.url)}
-        />
-      )}
-
       <div className="hero-content">
         <h1 {...(data.$ && data.$.heading)}>
           {data.heading}
@@ -46,6 +38,15 @@ const Hero = ({ data }: HeroProps) => {
           >
             {data.cta_text}
           </a>
+        )}
+      </div>
+      <div>
+        {data.image?.url && (
+          <img
+            src={data.image.url}
+            alt={data.image.title || data.heading || "Hero"}
+            {...(data.image?.$ && data.image.$.url)}
+          />
         )}
       </div>
     </section>

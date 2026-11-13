@@ -23,6 +23,7 @@ import TableBlock from "./components/TableBlock";
 import AccordionBlock from "./components/AccordionBlock";
 import RegistrationForm from "./components/RegistrationForm";
 import SearchableFAQ from "./components/SearchableFAQ";
+import Alternating from "./components/Alternating/Alternating";
 
 function App() {
   const [page, setPage] = useState<Page>();
@@ -134,6 +135,19 @@ function App() {
           >
             <SearchableFAQ
               {...(blockData.searchable_faq || blockData)}
+            />
+          </div>
+        );
+      }
+
+      if (blockType === "alternating") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <Alternating
+              {...(blockData.alternating || blockData)}
             />
           </div>
         );
