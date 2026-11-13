@@ -24,6 +24,7 @@ import AccordionBlock from "./components/AccordionBlock";
 import RegistrationForm from "./components/RegistrationForm";
 import SearchableFAQ from "./components/SearchableFAQ";
 import Alternating from "./components/Alternating/Alternating";
+import HeroCarousel from "./components/HeroCarousel/HeroCarousel";
 
 function App() {
   const [page, setPage] = useState<Page>();
@@ -148,6 +149,19 @@ function App() {
           >
             <Alternating
               {...(blockData.alternating || blockData)}
+            />
+          </div>
+        );
+      }
+
+      if (blockType === "hero_carousel") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <HeroCarousel
+              {...(blockData.hero_carousel || blockData)}
             />
           </div>
         );
