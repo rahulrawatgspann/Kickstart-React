@@ -23,6 +23,7 @@ interface AlternatingProps {
   button_url?: string;
   open_in_new_tab?: boolean;
   background_color?: string;
+  text_color?: string;
   overlay_opacity?: number;
 }
 
@@ -36,15 +37,16 @@ const Alternating: React.FC<AlternatingProps> = ({
   button_url,
   open_in_new_tab = false,
   background_color,
+  text_color,
   overlay_opacity = 55,
 }) => {
   const imageUrl = image?.url;
-  const backgroundImageUrl = background_image?.url;
+  const backgroundImageUrl = background_image?.url || image?.url;
 
   const sectionStyle = {
     backgroundColor:
       layout_variant === "image_left_text_right"
-        ? background_color || "#000000"
+        ? background_color || "#FFFFFF"
         : undefined,
     backgroundImage:
       layout_variant !== "image_left_text_right" &&
@@ -73,6 +75,7 @@ const Alternating: React.FC<AlternatingProps> = ({
   };
 
   // Variant 1: Image Left, Text Right
+  console.debug('🚀 ~ Alternating.tsx:77 ~ Alternating ~ layout_variant:', layout_variant);
   if (layout_variant === "image_left_text_right") {
     return (
       <section
@@ -90,13 +93,13 @@ const Alternating: React.FC<AlternatingProps> = ({
 
         <div className="alternating__content">
           {heading && (
-            <h2 className="alternating__heading">
+            <h2 className="alternating__heading" style={{color: text_color}}>
               {heading}
             </h2>
           )}
 
           {description && (
-            <p className="alternating__description">
+            <p className="alternating__description" style={{color: text_color}}>
               {description}
             </p>
           )}
@@ -118,13 +121,13 @@ const Alternating: React.FC<AlternatingProps> = ({
 
         <div className="alternating__content">
           {heading && (
-            <h2 className="alternating__heading">
+            <h2 className="alternating__heading" style={{color: text_color}}>
               {heading}
             </h2>
           )}
 
           {description && (
-            <p className="alternating__description">
+            <p className="alternating__description" style={{color: text_color}}>
               {description}
             </p>
           )}
@@ -147,13 +150,13 @@ const Alternating: React.FC<AlternatingProps> = ({
         <div className="alternating__content">
           <div className="alternating__text">
             {heading && (
-              <h2 className="alternating__heading">
+              <h2 className="alternating__heading" style={{color: text_color}}>
                 {heading}
               </h2>
             )}
 
             {description && (
-              <p className="alternating__description">
+              <p className="alternating__description" style={{color: text_color}}>
                 {description}
               </p>
             )}
