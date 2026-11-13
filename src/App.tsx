@@ -23,6 +23,7 @@ import TableBlock from "./components/TableBlock";
 import AccordionBlock from "./components/AccordionBlock";
 import RegistrationForm from "./components/RegistrationForm";
 import SearchableFAQ from "./components/SearchableFAQ";
+import VideoBlock from "./components/VideoBlock";
 
 function App() {
   const [page, setPage] = useState<Page>();
@@ -74,6 +75,18 @@ function App() {
       const blockData = blockType ? item[blockType] : null;
 
       if (!blockData) return null;
+
+      // Video block
+      if (blockType === "video") {
+        return (
+          <div
+            key={blockData?._metadata?.uid || index}
+            {...(page?.$ && page.$[`blocks__${index}`])}
+          >
+            <VideoBlock {...blockData} />
+          </div>
+        );
+      }
 
       // CTA Block
       if (blockType === "cta_block") {

@@ -21,6 +21,7 @@
 @layer base {
   body {
     @apply antialiased text-gray-800;
+    overflow-x: clip;
   }
 }
 
@@ -68,4 +69,220 @@
 
 details div {
   padding: 20px;
+}
+
+.video-block__variation-heading {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  box-sizing: border-box;
+  padding: 0 0 0 0.5rem;
+  background: #fff;
+  color: #111;
+}
+
+.video-block__variation-heading h2 {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.video-block__variation-heading--video-only h2 {
+  font-size: clamp(1.5rem, 3.5vw, 3rem);
+}
+
+.video-wrapper.video-block {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  box-sizing: border-box;
+  padding: 2rem 1rem;
+  background: #f5f5f4;
+  color: #111827;
+}
+
+.video-wrapper.video-block.video-block--text-left {
+  background: #292524;
+  color: #fff;
+}
+
+.video-wrapper.video-block--dam-text-left-video-right {
+  background: #292524;
+  color: #fff;
+}
+
+.video-container {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
+  gap: 2rem;
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.video-block--dam-text-left-video-right .video-container {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  max-width: 75rem;
+}
+
+.video-block--video-left .video-text {
+  order: 2;
+}
+
+.video-block--video-left .video-media {
+  order: 1;
+}
+
+.video-text {
+  min-width: 0;
+}
+
+.video-text__heading,
+.video-block__heading {
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.video-text__heading,
+.video-text__description,
+.video-text__description h1,
+.video-text__description h2,
+.video-text__description h3,
+.video-text__description p,
+.video-text__description li {
+  color: inherit;
+}
+
+.video-text__description h1,
+.video-text__description h2,
+.video-text__description h3 {
+  margin: 0;
+  font-family: "UniversCom Condense", "Arial Narrow", Arial, sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 3.625rem;
+}
+
+.video-text__description {
+  font-family: "UniversCom Roman", Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.video-text__description p {
+  margin: 1rem 0;
+}
+
+.video-text__description ul {
+  list-style: disc outside;
+}
+
+.video-text__description ol {
+  list-style: decimal outside;
+}
+
+.video-text__description ul,
+.video-text__description ol {
+  margin: 1rem 0;
+  padding-left: 0;
+  font-family: "UniversCom Roman", Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.video-text__description li::marker {
+  color: #e21227;
+}
+
+.video-text__description li {
+  padding-top: 0;
+}
+
+.video-text__description a {
+  color: #e21227;
+}
+
+.video-media {
+  min-width: 0;
+}
+
+.video-media__caption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.video-media__caption p {
+  margin: 0;
+}
+
+.video-player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 0.75rem;
+  background: #111;
+}
+
+.video-block--video-only {
+  background: #e7e5e4;
+}
+
+.video-block__heading {
+  width: 100%;
+  margin: 0 auto 1rem;
+  max-width: 90rem;
+}
+
+.video-block--video-only .video-container {
+  display: flex;
+  justify-content: center;
+}
+
+.video-block--video-only .video-media {
+  width: min(100%, 56rem);
+}
+
+@media (min-width: 768px) {
+  .video-wrapper.video-block {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .video-wrapper.video-block {
+    padding-right: 7.5rem;
+    padding-left: 7.5rem;
+  }
+
+  .video-wrapper.video-block--dam-text-left-video-right {
+    padding-right: 6.25vw;
+    padding-left: 6.25vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .video-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .video-block--video-left .video-text,
+  .video-block--video-left .video-media {
+    order: initial;
+  }
+
+  .video-block--dam-text-left-video-right .video-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
 }
